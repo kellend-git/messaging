@@ -8,8 +8,8 @@ import (
 	"sync"
 	"testing"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
-	"github.com/astromode-ai/astro-messaging/internal/adapter"
+	"github.com/astropods/messaging/internal/adapter"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 	slackapi "github.com/slack-go/slack"
 )
 

@@ -6,7 +6,7 @@ import (
 	"io"
 	"log"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

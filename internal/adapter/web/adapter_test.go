@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
-	"github.com/astromode-ai/astro-messaging/internal/store"
+	"github.com/astropods/messaging/internal/store"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 )
 
 func TestConnectionManager(t *testing.T) {
@@ -176,9 +176,9 @@ func TestSSEEventFormat(t *testing.T) {
 
 func TestNewChunkEvent(t *testing.T) {
 	tests := []struct {
-		name          string
-		chunkType     pb.ContentChunk_ChunkType
-		expectedType  string
+		name         string
+		chunkType    pb.ContentChunk_ChunkType
+		expectedType string
 	}{
 		{"start", pb.ContentChunk_START, "start"},
 		{"delta", pb.ContentChunk_DELTA, "delta"},
@@ -1346,14 +1346,14 @@ func TestWebAdapter_HandleAgentResponse_FullStreamingSequence(t *testing.T) {
 
 	// Collect all events (END produces chunk + finish = 8 total)
 	expectedEvents := []string{
-		EventStatus,  // THINKING
-		EventChunk,   // START
-		EventChunk,   // DELTA "Hello "
-		EventChunk,   // DELTA "world"
-		EventStatus,  // GENERATING
-		EventChunk,   // DELTA "!"
-		EventChunk,   // END
-		EventFinish,  // finish (auto-sent after END)
+		EventStatus, // THINKING
+		EventChunk,  // START
+		EventChunk,  // DELTA "Hello "
+		EventChunk,  // DELTA "world"
+		EventStatus, // GENERATING
+		EventChunk,  // DELTA "!"
+		EventChunk,  // END
+		EventFinish, // finish (auto-sent after END)
 	}
 
 	for i, expected := range expectedEvents {

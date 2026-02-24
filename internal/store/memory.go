@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/astromode-ai/astro-messaging/pkg/types"
+	"github.com/astropods/messaging/pkg/types"
 )
 
 // MemoryStore is an in-memory implementation of ConversationStore

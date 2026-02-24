@@ -4,7 +4,7 @@ import (
 	"sync"
 	"testing"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 )
 
 func TestAgentConfigStore_InitiallyNil(t *testing.T) {

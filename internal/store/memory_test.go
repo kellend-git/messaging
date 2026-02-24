@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/astromode-ai/astro-messaging/pkg/types"
+	"github.com/astropods/messaging/pkg/types"
 )
 
 func TestMemoryStore_CreateAndGet(t *testing.T) {

@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/astromode-ai/astro-messaging.git"
+    "url": "https://github.com/astropods/messaging.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

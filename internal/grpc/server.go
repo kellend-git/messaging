@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
-	"github.com/astromode-ai/astro-messaging/internal/adapter"
-	"github.com/astromode-ai/astro-messaging/internal/store"
-	"github.com/astromode-ai/astro-messaging/pkg/types"
+	"github.com/astropods/messaging/internal/adapter"
+	"github.com/astropods/messaging/internal/store"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
+	"github.com/astropods/messaging/pkg/types"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -79,8 +79,8 @@ func (s *Server) Start(ctx context.Context) error {
 
 	s.grpcServer = grpc.NewServer(
 		grpc.MaxConcurrentStreams(100),
-		grpc.MaxRecvMsgSize(4 * 1024 * 1024), // 4MB
-		grpc.MaxSendMsgSize(4 * 1024 * 1024), // 4MB
+		grpc.MaxRecvMsgSize(4*1024*1024), // 4MB
+		grpc.MaxSendMsgSize(4*1024*1024), // 4MB
 	)
 
 	pb.RegisterAgentMessagingServer(s.grpcServer, s)

@@ -3,7 +3,7 @@ package store
 import (
 	"sync"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 )
 
 // AgentConfigStore stores the agent's declared configuration in memory.

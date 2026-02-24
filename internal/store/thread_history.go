@@ -4,18 +4,18 @@ import (
 	"sync"
 	"time"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // ThreadHistoryStore stores recent platform thread messages for all adapters
 // This provides ground truth for platform thread state (handles edits/deletes)
 type ThreadHistoryStore struct {
-	threads    map[string]*ThreadHistory
-	mu         sync.RWMutex
-	maxSize    int           // Max number of threads to store
-	maxMessages int           // Max messages per thread
-	ttl        time.Duration
+	threads     map[string]*ThreadHistory
+	mu          sync.RWMutex
+	maxSize     int // Max number of threads to store
+	maxMessages int // Max messages per thread
+	ttl         time.Duration
 }
 
 // ThreadHistory represents a conversation thread with its messages

@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/astromode-ai/astro-messaging/internal/adapter"
+	"github.com/astropods/messaging/internal/adapter"
 )
 
 // Config holds the overall messaging service configuration

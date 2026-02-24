@@ -33,9 +33,9 @@ RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build \
     -ldflags="-w -s \
-      -X 'github.com/astromode-ai/astro-messaging/internal/version.Version=${VERSION}' \
-      -X 'github.com/astromode-ai/astro-messaging/internal/version.Commit=${COMMIT}' \
-      -X 'github.com/astromode-ai/astro-messaging/internal/version.BuildDate=${BUILD_DATE}'" \
+      -X 'github.com/astropods/messaging/internal/version.Version=${VERSION}' \
+      -X 'github.com/astropods/messaging/internal/version.Commit=${COMMIT}' \
+      -X 'github.com/astropods/messaging/internal/version.BuildDate=${BUILD_DATE}'" \
     -o messaging \
     ./cmd/server
 

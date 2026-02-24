@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 	"github.com/slack-go/slack"
 )
 

@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
-	"github.com/astromode-ai/astro-messaging/internal/adapter"
-	"github.com/astromode-ai/astro-messaging/internal/store"
-	"github.com/astromode-ai/astro-messaging/pkg/types"
+	"github.com/astropods/messaging/internal/adapter"
+	"github.com/astropods/messaging/internal/store"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
+	"github.com/astropods/messaging/pkg/types"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -34,10 +34,10 @@ func newMockAdapter(platform string) *mockAdapter {
 }
 
 func (m *mockAdapter) Initialize(ctx context.Context, config adapter.Config) error { return nil }
-func (m *mockAdapter) Start(ctx context.Context) error                            { return nil }
-func (m *mockAdapter) Stop(ctx context.Context) error                             { return nil }
-func (m *mockAdapter) GetPlatformName() string                                    { return m.platform }
-func (m *mockAdapter) IsHealthy(ctx context.Context) bool                         { return m.healthy }
+func (m *mockAdapter) Start(ctx context.Context) error                             { return nil }
+func (m *mockAdapter) Stop(ctx context.Context) error                              { return nil }
+func (m *mockAdapter) GetPlatformName() string                                     { return m.platform }
+func (m *mockAdapter) IsHealthy(ctx context.Context) bool                          { return m.healthy }
 func (m *mockAdapter) Capabilities() adapter.AdapterCapabilities {
 	return adapter.AdapterCapabilities{}
 }

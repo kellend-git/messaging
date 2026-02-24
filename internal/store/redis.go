@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/astromode-ai/astro-messaging/pkg/types"
+	"github.com/astropods/messaging/pkg/types"
 	"github.com/redis/go-redis/v9"
 )
 

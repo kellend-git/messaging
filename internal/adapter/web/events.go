@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 )
 
 // SSE Event types matching playground pattern
@@ -97,8 +97,8 @@ type FinishEventData struct {
 
 // PromptsEventData represents the data for suggested prompts
 type PromptsEventData struct {
-	Type    string        `json:"type"`
-	Prompts []PromptData  `json:"prompts"`
+	Type    string       `json:"type"`
+	Prompts []PromptData `json:"prompts"`
 }
 
 // PromptData represents a single suggested prompt

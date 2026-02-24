@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	"github.com/astromode-ai/astro-messaging/pkg/types"
+	"github.com/astropods/messaging/pkg/types"
 )
 
 // ConversationStore is the interface for storing conversation contexts

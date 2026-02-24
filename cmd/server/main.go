@@ -8,13 +8,13 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/astromode-ai/astro-messaging/config"
-	"github.com/astromode-ai/astro-messaging/internal/adapter"
-	"github.com/astromode-ai/astro-messaging/internal/adapter/slack"
-	"github.com/astromode-ai/astro-messaging/internal/adapter/web"
-	"github.com/astromode-ai/astro-messaging/internal/grpc"
-	"github.com/astromode-ai/astro-messaging/internal/store"
-	"github.com/astromode-ai/astro-messaging/internal/version"
+	"github.com/astropods/messaging/config"
+	"github.com/astropods/messaging/internal/adapter"
+	"github.com/astropods/messaging/internal/adapter/slack"
+	"github.com/astropods/messaging/internal/adapter/web"
+	"github.com/astropods/messaging/internal/grpc"
+	"github.com/astropods/messaging/internal/store"
+	"github.com/astropods/messaging/internal/version"
 )
 
 func main() {

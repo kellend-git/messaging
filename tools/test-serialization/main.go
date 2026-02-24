@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -78,13 +78,13 @@ func serializeFromGo() {
 
 	// Create Message with all fields
 	msg := &pb.Message{
-		Id:             "msg-full-001",
-		Platform:       "slack",
-		ConversationId: "conv-001",
-		Content:        "Test message from Go",
-		Timestamp:      timestamppb.New(now),
+		Id:              "msg-full-001",
+		Platform:        "slack",
+		ConversationId:  "conv-001",
+		Content:         "Test message from Go",
+		Timestamp:       timestamppb.New(now),
 		PlatformContext: pc,
-		User:           user,
+		User:            user,
 	}
 
 	// Serialize using protojson (what gRPC uses)

@@ -3,8 +3,8 @@ package adapter
 import (
 	"context"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
-	"github.com/astromode-ai/astro-messaging/internal/store"
+	"github.com/astropods/messaging/internal/store"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 )
 
 // Adapter is the interface that all platform adapters must implement

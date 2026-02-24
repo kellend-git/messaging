@@ -5,7 +5,7 @@ import (
 	"sync"
 	"testing"
 
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 	"github.com/slack-go/slack/slackevents"
 )
 
@@ -71,10 +71,10 @@ func TestHandleMessage_DMThreadReplyProcessed(t *testing.T) {
 	a, handler := newTestAdapter()
 
 	ev := &slackevents.MessageEvent{
-		Channel:        "D123456",
-		User:           "U123",
-		Text:           "follow up",
-		TimeStamp:      "1234567891.000001",
+		Channel:         "D123456",
+		User:            "U123",
+		Text:            "follow up",
+		TimeStamp:       "1234567891.000001",
 		ThreadTimeStamp: "1234567890.000001",
 	}
 
@@ -110,10 +110,10 @@ func TestHandleMessage_ChannelThreadReplyProcessed(t *testing.T) {
 	a, handler := newTestAdapter()
 
 	ev := &slackevents.MessageEvent{
-		Channel:        "C123456",
-		User:           "U123",
-		Text:           "thread reply without mention",
-		TimeStamp:      "1234567891.000001",
+		Channel:         "C123456",
+		User:            "U123",
+		Text:            "thread reply without mention",
+		TimeStamp:       "1234567891.000001",
 		ThreadTimeStamp: "1234567890.000001",
 	}
 
@@ -172,11 +172,11 @@ func TestHandleMessage_ThreadBroadcastAllowed(t *testing.T) {
 	a, handler := newTestAdapter()
 
 	ev := &slackevents.MessageEvent{
-		Channel:        "D123456",
-		User:           "U123",
-		Text:           "broadcast reply",
-		SubType:        "thread_broadcast",
-		TimeStamp:      "1234567891.000001",
+		Channel:         "D123456",
+		User:            "U123",
+		Text:            "broadcast reply",
+		SubType:         "thread_broadcast",
+		TimeStamp:       "1234567891.000001",
 		ThreadTimeStamp: "1234567890.000001",
 	}
 
@@ -191,10 +191,10 @@ func TestHandleMessage_PlatformContext(t *testing.T) {
 	a, handler := newTestAdapter()
 
 	ev := &slackevents.MessageEvent{
-		Channel:        "C123456",
-		User:           "U789",
-		Text:           "thread msg",
-		TimeStamp:      "1234567891.000001",
+		Channel:         "C123456",
+		User:            "U789",
+		Text:            "thread msg",
+		TimeStamp:       "1234567891.000001",
 		ThreadTimeStamp: "1234567890.000001",
 	}
 

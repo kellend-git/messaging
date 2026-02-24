@@ -103,13 +103,13 @@ LOG_LEVEL=info
 ### Go
 
 ```bash
-go get github.com/astromode-ai/astro-messaging/pkg/client
+go get github.com/astropods/messaging/pkg/client
 ```
 
 ```go
 import (
-    "github.com/astromode-ai/astro-messaging/pkg/client"
-    pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
+    "github.com/astropods/messaging/pkg/client"
+    pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 )
 
 c, err := client.NewClient("localhost:9090")

@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/astropods/messaging/internal/adapter"
+	"github.com/astropods/messaging/internal/store"
+	pb "github.com/astropods/messaging/pkg/gen/astro/messaging/v1"
 	"github.com/google/uuid"
-	pb "github.com/astromode-ai/astro-messaging/pkg/gen/astro/messaging/v1"
-	"github.com/astromode-ai/astro-messaging/internal/adapter"
-	"github.com/astromode-ai/astro-messaging/internal/store"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
