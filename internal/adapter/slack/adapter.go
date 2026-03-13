@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"slices"
 	"strings"
 	"time"
 
@@ -195,6 +196,13 @@ func (a *SlackAdapter) handleMessage(ctx context.Context, ev *slackevents.Messag
 		log.Printf("[Slack] Processing thread reply in channel %s, thread=%s", ev.Channel, ev.ThreadTimeStamp)
 	}
 
+	// Allowlist: if configured, only allow messages from allowed channels or users
+	if !a.isAllowed(ev.Channel, ev.User) {
+		log.Printf("[Slack] Message from disallowed channel=%s or user=%s", ev.Channel, ev.User)
+		a.sendNotEnabledMessage(ctx, ev.Channel, ev.ThreadTimeStamp)
+		return
+	}
+
 	log.Printf("[Slack] Message received: channel=%s, user=%s, text=%s", ev.Channel, ev.User, ev.Text)
 
 	// Build conversation ID
@@ -292,6 +300,17 @@ func (a *SlackAdapter) handleBlockActions(ctx context.Context, callback *slack.I
 func (a *SlackAdapter) handleAppMention(ctx context.Context, ev *slackevents.AppMentionEvent) {
 	log.Printf("[Slack] App mentioned: channel=%s, user=%s, text=%s", ev.Channel, ev.User, ev.Text)
 
+	// Allowlist: if configured, only allow mentions from allowed channels or users
+	if !a.isAllowed(ev.Channel, ev.User) {
+		log.Printf("[Slack] App mention from disallowed channel=%s or user=%s", ev.Channel, ev.User)
+		threadID := ev.ThreadTimeStamp
+		if threadID == "" {
+			threadID = ev.TimeStamp
+		}
+		a.sendNotEnabledMessage(ctx, ev.Channel, threadID)
+		return
+	}
+
 	// Use ThreadTimeStamp if already in a thread, otherwise use the message's
 	// own TimeStamp so the response creates a new thread under the mention.
 	threadID := ev.ThreadTimeStamp
@@ -345,6 +364,27 @@ func (a *SlackAdapter) sendErrorMessage(ctx context.Context, channelID, threadTS
 	if postErr != nil {
 		log.Printf("[Slack] Error sending error message: %v", postErr)
 	}
+}
+
+// sendNotEnabledMessage tells the user the app is not enabled for this channel or user
+func (a *SlackAdapter) sendNotEnabledMessage(ctx context.Context, channelID, threadTS string) {
+	content := "This app has not been enabled for this channel or user. Please contact your workspace admin to enable it."
+	_, _, postErr := a.client.PostMessageContext(ctx, channelID,
+		slack.MsgOptionText(content, false),
+		slack.MsgOptionTS(threadTS),
+	)
+	if postErr != nil {
+		log.Printf("[Slack] Error sending not-enabled message: %v", postErr)
+	}
+}
+
+// isAllowed returns true if the message should be dispatched (no allowlist, or channel/user allowed)
+func (a *SlackAdapter) isAllowed(channelID, userID string) bool {
+	allowedChannels := a.config.AllowedChannelIDs
+	allowedUsers := a.config.AllowedUserIDs
+	return (len(allowedChannels) == 0 && len(allowedUsers) == 0) ||
+		slices.Contains(allowedChannels, channelID) ||
+		slices.Contains(allowedUsers, userID)
 }
 
 // SetMessageHandler sets the handler for incoming messages from the platform

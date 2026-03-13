@@ -13,6 +13,9 @@ slack:
   enabled: true
   socket_mode: true
   auto_thread: true
+  # Allowlists: restrict which channels/users can use the app. Empty = allow all.
+  allowed_channels: []
+  allowed_users: []
   rate_limit:
     requests_per_second: 3
     burst_size: 10

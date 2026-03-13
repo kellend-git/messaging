@@ -65,6 +65,11 @@ type Config struct {
 	WebhookURL string
 	AutoThread bool
 	RateLimit  RateLimitConfig
+
+	// Allowlist for Slack: if either is non-empty, only messages from allowed channels or users are dispatched.
+	// Empty means allow all (backward compatible).
+	AllowedChannelIDs []string
+	AllowedUserIDs    []string
 }
 
 // RateLimitConfig configures rate limiting
