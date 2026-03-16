@@ -1,6 +1,7 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
@@ -44,16 +45,27 @@ type ThreadHistoryConfig struct {
 	TTL         int // TTL in hours
 }
 
+// SlackCredentials holds secret tokens parsed from individual env vars.
+type SlackCredentials struct {
+	BotToken string
+	AppToken string
+}
+
+// SlackAdapterConfig holds behavioral settings parsed from the SLACK_CONFIG JSON env var.
+type SlackAdapterConfig struct {
+	ActionableReactions []string `json:"actionable_reactions,omitempty"`
+	SocketMode          *bool    `json:"socket_mode,omitempty"`
+	AutoThread          *bool    `json:"auto_thread,omitempty"`
+	AllowedChannels 	[]string `json:"allowed_channels,omitempty"`
+	AllowedUsers    	[]string `json:"allowed_users,omitempty"`
+}
+
 // SlackConfig holds Slack-specific configuration
 type SlackConfig struct {
-	Enabled         bool
-	BotToken        string
-	AppToken        string
-	SocketMode      bool
-	AutoThread      bool
-	AllowedChannels []string // Channel IDs that may use the app (empty = allow all)
-	AllowedUsers    []string // User IDs that may use the app (empty = allow all)
-	Config          adapter.Config
+	Enabled       bool
+	Credentials   SlackCredentials
+	AdapterConfig SlackAdapterConfig
+	Config        adapter.Config
 }
 
 // WebConfig holds web adapter configuration
@@ -97,28 +109,55 @@ func Load() (*Config, error) {
 		AppToken:        getEnv("SLACK_APP_TOKEN", ""),
 		SocketMode:      getEnvBool("SLACK_SOCKET_MODE", true),
 		AutoThread:      getEnvBool("SLACK_AUTO_THREAD", true),
-		AllowedChannels: getEnvList("SLACK_ALLOWED_CHANNELS", nil),
-		AllowedUsers:    getEnvList("SLACK_ALLOWED_USERS", nil),
+	// Slack configuration: credentials from individual env vars, behavioral
+	// settings from SLACK_CONFIG JSON. Defaults match the previous hardcoded values.
+	cfg.Slack.Enabled = getEnvBool("SLACK_ENABLED", false)
+	cfg.Slack.Credentials = SlackCredentials{
+		BotToken: getEnv("SLACK_BOT_TOKEN", ""),
+		AppToken: getEnv("SLACK_APP_TOKEN", ""),
 	}
 
-	// Validate Slack configuration if enabled
+	cfg.Slack.AdapterConfig = SlackAdapterConfig{
+		SocketMode: boolPtr(true),
+		AutoThread: boolPtr(true),
+		AllowedChannels: getEnvList("SLACK_ALLOWED_CHANNELS", []string{}),
+		AllowedUsers: getEnvList("SLACK_ALLOWED_USERS", []string{}),
+	}
+	if raw := os.Getenv("SLACK_CONFIG"); raw != "" {
+		if err := json.Unmarshal([]byte(raw), &cfg.Slack.AdapterConfig); err != nil {
+			return nil, fmt.Errorf("failed to parse SLACK_CONFIG JSON: %w", err)
+		}
+		if cfg.Slack.AdapterConfig.SocketMode == nil {
+			cfg.Slack.AdapterConfig.SocketMode = boolPtr(true)
+		}
+		if cfg.Slack.AdapterConfig.AutoThread == nil {
+			cfg.Slack.AdapterConfig.AutoThread = boolPtr(true)
+		}
+	}
+	if len(cfg.Slack.AdapterConfig.ActionableReactions) == 0 {
+		cfg.Slack.AdapterConfig.ActionableReactions = getEnvList("SLACK_ACTIONABLE_REACTIONS", nil)
+	}
+
+	socketMode := derefBool(cfg.Slack.AdapterConfig.SocketMode, true)
+	autoThread := derefBool(cfg.Slack.AdapterConfig.AutoThread, true)
+
 	if cfg.Slack.Enabled {
-		if cfg.Slack.BotToken == "" {
+		if cfg.Slack.Credentials.BotToken == "" {
 			return nil, fmt.Errorf("SLACK_BOT_TOKEN is required when Slack is enabled")
 		}
-		if cfg.Slack.SocketMode && cfg.Slack.AppToken == "" {
+		if socketMode && cfg.Slack.Credentials.AppToken == "" {
 			return nil, fmt.Errorf("SLACK_APP_TOKEN is required for Socket Mode")
 		}
 	}
 
-	// Set adapter config
 	cfg.Slack.Config = adapter.Config{
-		BotToken:          cfg.Slack.BotToken,
-		AppToken:          cfg.Slack.AppToken,
-		SocketMode:        cfg.Slack.SocketMode,
-		AutoThread:        cfg.Slack.AutoThread,
-		AllowedChannelIDs: cfg.Slack.AllowedChannels,
-		AllowedUserIDs:    cfg.Slack.AllowedUsers,
+		BotToken:            cfg.Slack.Credentials.BotToken,
+		AppToken:            cfg.Slack.Credentials.AppToken,
+		SocketMode:          socketMode,
+		AutoThread:          autoThread,
+		ActionableReactions: cfg.Slack.AdapterConfig.ActionableReactions,
+		AllowedChannelIDs:   cfg.Slack.AdapterConfig.AllowedChannels,
+		AllowedUserIDs:      cfg.Slack.AdapterConfig.AllowedUsers,
 		RateLimit: adapter.RateLimitConfig{
 			RequestsPerSecond: getEnvFloat("SLACK_RATE_LIMIT_RPS", 3.0),
 			BurstSize:         getEnvInt("SLACK_RATE_LIMIT_BURST", 10),
@@ -195,4 +234,13 @@ func getEnvFloat(key string, defaultValue float64) float64 {
 		}
 	}
 	return defaultValue
+}
+
+func boolPtr(v bool) *bool { return &v }
+
+func derefBool(p *bool, fallback bool) bool {
+	if p != nil {
+		return *p
+	}
+	return fallback
 }
